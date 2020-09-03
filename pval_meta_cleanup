@@ -23,6 +23,10 @@ nano logtrial.tsv
 # Moving log as the last file in signifsnps.tsv into new file calling significant_snps.tsv
 paste signifsnps.tsv logtrial.tsv > significant_snps.tsv  
 
+_______________________________________________________________________________________________________________
+
+# Can plot only significant snps or just load the whole data set and plot as follows
+
 # Activate R
 source /share/hennlab/progs/miniconda3/etc/profile.d/conda.sh
 conda activate R-env

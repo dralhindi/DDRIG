@@ -1,0 +1,59 @@
+# Using ggplot2 for GWAS
+
+# load libraries 
+library(ggplot2)
+library(dplyr)
+
+# load data
+args <- commandArgs(TRUE)
+data <- read.table(args[1], header=T)
+
+# string BP
+data$BPcum <- NA
+s <- 0
+nbp <- c()
+for (i in unique(data$CHR)){
+  nbp[i] <- max(data[data$CHR == i,]$BP)
+  data[data$CHR == i,"BPcum"] <- data[data$CHR == i,"BP"] + s
+  s <- s + nbp[i]
+}
+
+
+# -log10(PVAL) and bonferonni cut off
+data$logp <- -log10(data$PVAL_META)
+bofferroni<- -log10(0.05/dim(data)[1])
+
+
+# filter data so it can graph a little more easily
+data <- filter(data, PVAL_META < 1e-2)
+data<-data[!(data$PVAL_META==0),]
+
+# plot
+plot <- ggplot(data, aes(x=BPcum, y=-log10(PVAL_META))) +
+  
+  # add bofferroni cut off
+  geom_hline(yintercept=bofferroni, color = "red", size=.85) +
+  
+  # show all points
+  geom_point( aes(color=as.factor(CHR)), alpha=0.4, size=1.3) +
+  scale_color_manual(values = rep(c("skyblue4", "mediumorchid"), 22 )) +
+  
+  # custom X axis:
+  scale_x_continuous( label = axisdf$CHR, breaks= axisdf$center ) +
+  # remove space between plot area and x axis
+  scale_y_continuous(expand = c(0, 0) ) +     
+  
+  # add title and lables and theme
+  ggtitle(paste("CHR20 CHR22 Manhattan Plot")) +
+            xlab("BP") + ylab("-log10(pvalue)") +
+  theme_bw() +
+  theme( 
+    legend.position="none",
+    panel.border = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+
+pdf(paste(args[1],"_gwasplot.png",sep=""), height=6, width=12)
+plot
+dev.off()

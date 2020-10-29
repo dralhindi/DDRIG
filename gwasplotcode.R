@@ -18,11 +18,11 @@ for (i in unique(data$CHR)){
   s <- s + nbp[i]
 }
 
-
 # -log10(PVAL) and bonferonni cut off
 data$logp <- -log10(data$PVAL_META)
 bofferroni<- -log10(0.05/dim(data)[1])
 
+axisdf <- data %>% group_by(CHR) %>% summarize(center=( max(BPcum) + min(BPcum) ) / 2 )
 
 # filter data so it can graph a little more easily
 data <- filter(data, PVAL_META < 1e-2)

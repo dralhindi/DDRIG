@@ -1,14 +1,19 @@
-# Using ggplot2 for GWAS
+# using ggplot2 for GWAS
 
-# load libraries 
+args=commandArgs(TRUE)
+
+# read in data
+data <- read.table(args[1], header = TRUE)
+pval = args[2]
+
+data = as.data.frame(data)
+
+
+# load libraries
 library(ggplot2)
 library(dplyr)
 
-# load data
-args <- commandArgs(TRUE)
-data <- read.table(args[1], header=T)
 
-# string BP
 data$BPcum <- NA
 s <- 0
 nbp <- c()
@@ -18,42 +23,49 @@ for (i in unique(data$CHR)){
   s <- s + nbp[i]
 }
 
-# -log10(PVAL) and bonferonni cut off
-data$logp <- -log10(data$PVAL_META)
+axisdf = data %>% group_by(CHR) %>% summarize(center=( max(BPcum) + min(BPcum) ) / 2 )
+
+
+# -log10(pval) and bonferonni cut off
+data$logp <- -log10(data$pval)
 bofferroni<- -log10(0.05/dim(data)[1])
 
-axisdf <- data %>% group_by(CHR) %>% summarize(center=( max(BPcum) + min(BPcum) ) / 2 )
 
 # filter data so it can graph a little more easily
-data <- filter(data, PVAL_META < 1e-2)
-data<-data[!(data$PVAL_META==0),]
+data<-data[!(data$pval==0),]
+data <- filter(data, pval < 1e-2)
 
 # plot
-plot <- ggplot(data, aes(x=BPcum, y=-log10(PVAL_META))) +
-  
+plot <- ggplot(data, aes(x=BPcum, y=logp)) +
+
   # add bofferroni cut off
-  geom_hline(yintercept=bofferroni, color = "red", size=.85) +
-  
+  geom_hline(yintercept=bofferroni, color = "red", size=.65) +
+
   # show all points
   geom_point( aes(color=as.factor(CHR)), alpha=0.4, size=1.3) +
   scale_color_manual(values = rep(c("skyblue4", "mediumorchid"), 22 )) +
-  
+
   # custom X axis:
   scale_x_continuous( label = axisdf$CHR, breaks= axisdf$center ) +
   # remove space between plot area and x axis
-  scale_y_continuous(expand = c(0, 0) ) +     
-  
-  # add title and lables and theme
-  ggtitle(paste("CHR20 CHR22 Manhattan Plot")) +
-            xlab("BP") + ylab("-log10(pvalue)") +
+  scale_y_continuous(expand = c(0, 0) ) +
+
+  # add title and lables
+  ggtitle(paste(args[2],"Manhattan Plot")) +
+  xlab("BP") + ylab("-log10(PVALUE)") +
+
+
+  # custom the theme:
   theme_bw() +
-  theme( 
+  theme(
     legend.position="none",
     panel.border = element_blank(),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank()
   )
 
-pdf(paste(args[1],"_gwasplot.png",sep=""), height=6, width=12)
+
+pdf(paste(args[1],"_gwasplot.pdf",sep=""), height=6, width=12)
 plot
 dev.off()
+

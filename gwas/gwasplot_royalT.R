@@ -1,33 +1,42 @@
+library(ggplot2)
+library(dplyr)
+
 # Using ggplot2 for GWAS by Dana Al-Hindi. 
-# Name Royal T because of the Royal Tenenbaum colors scheme.
+# The file is named Royal T after the Royal Tenenbaum colors scheme.
+
 # This code is set up to plot the statistical results from a GWAS. 
 # It requires a data frame that has a column CHR and BP present. 
-# arg[1] is the name of the file, arg[2] is the column of which to plot (p-values)
+# args[1]: the name of the file
+# args[2]: the column of which to plot (p-values)
 
-# set arguments as true
+# Set arguments as true.
 args=commandArgs(TRUE)
 
 
-# read in data
+# Read in data.
 data <- read.table(args[1], header = TRUE)
 pval = args[2]
 data = as.data.frame(data)
 data[pval] <- lapply(data[pval], as.numeric)
 
-# set colors for plot
-colors <- c("#9A872D", "#F5CDB6", "#F7B0AA", "#FDDDA4", "#76A08A", 
-            "#9A872D", "#F5CDB6", "#F7B0AA", "#FDDDA4", "#76A08A",
-            "#9A872D", "#F5CDB6", "#F7B0AA", "#FDDDA4", "#76A08A", 
-            "#9A872D", "#F5CDB6", "#F7B0AA", "#FDDDA4", "#76A08A",
-            "#9A872D", "#F5CDB6", "#F7B0AA")
+# Set colors for plot.
+
+olive_yellow <- "#9A872D"
+soft_orange <- "#F5CDB6"
+soft_red <- "#F7B0AA"
+mango_yogurt <- "#FDDDA4"
+mostly_desaturated_dark_cyan_lime_green <- "#76A08A"
+
+colors <- c(olive_yellow, soft_orange, soft_red, mango_yogurt, mostly_desaturated_dark_cyan_lime_green, 
+            olive_yellow, soft_orange, soft_red, mango_yogurt, mostly_desaturated_dark_cyan_lime_green,
+            olive_yellow, soft_orange, soft_red, mango_yogurt, mostly_desaturated_dark_cyan_lime_green, 
+            olive_yellow, soft_orange, soft_red, mango_yogurt, mostly_desaturated_dark_cyan_lime_green,
+            olive_yellow, soft_orange, soft_red)
 
 
-# load libraries
-library(ggplot2)
-library(dplyr)
 data$BPcum <- NA
 
-# group by chromosome and string bp together numerically 
+# Group by chromosome and string bp together numerically.
 s <- 0
 nbp <- c()
 for (i in unique(data$CHR)){
@@ -36,7 +45,7 @@ for (i in unique(data$CHR)){
   s <- s + nbp[i]
 }
 
-# define an axis 
+# Define an axis.
 axisdf = data %>% group_by(CHR) %>% summarize(center=( max(BPcum) + min(BPcum) ) / 2 )
 
 
@@ -51,7 +60,6 @@ data <- filter(data, data[pval] < 1e-2)
 data$logp = unlist(data$logp)
 
 
-# plot
 plot <- ggplot(data, aes(x=BPcum, y=logp)) +
 
   # show all points
@@ -84,4 +92,3 @@ plot <- ggplot(data, aes(x=BPcum, y=logp)) +
 pdf(paste("gwasplot",args[2],args[1],".pdf", sep="_"), height=6, width=12)
 plot
 dev.off()
-

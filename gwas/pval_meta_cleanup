@@ -3,10 +3,10 @@ cd /share/hennlab/projects/UKB_Pigmentation/01-Working/d_workspace/
 
 # Filter significant snps (bonferonni)
 
-wc -l continuous-1717-both_sexes.metaonly.tsv 
+fdsawc -l continuous-1717-both_sexes.metaonly.tsv 
 # output: 28987535 continuous-1717-both_sexes.metaonly.tsv
 
-# 0.05 / 28987535 = 1.72487933e-9, or 0.000000000172487933
+#05 / 28987535 = 1.72487933e-9, or 0.000000000172487933
 
 awk '{ if($8 <= 0.00000000172487933) { print }}' continuous-1717-both_sexes.metaonly.tsv > ukb_only_signifsnps.tsv
 

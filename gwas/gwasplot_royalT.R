@@ -25,12 +25,12 @@ olive_yellow <- "#9A872D"
 soft_orange <- "#F5CDB6"
 soft_red <- "#F7B0AA"
 mango_yogurt <- "#FDDDA4"
-mostly_desaturated_dark_cyan_lime_green <- "#76A08A"
+moss_green <- "#76A08A"
 
-colors <- c(olive_yellow, soft_orange, soft_red, mango_yogurt, mostly_desaturated_dark_cyan_lime_green, 
-            olive_yellow, soft_orange, soft_red, mango_yogurt, mostly_desaturated_dark_cyan_lime_green,
-            olive_yellow, soft_orange, soft_red, mango_yogurt, mostly_desaturated_dark_cyan_lime_green, 
-            olive_yellow, soft_orange, soft_red, mango_yogurt, mostly_desaturated_dark_cyan_lime_green,
+colors <- c(olive_yellow, soft_orange, soft_red, mango_yogurt, moss_green, 
+            olive_yellow, soft_orange, soft_red, mango_yogurt, moss_green,
+            olive_yellow, soft_orange, soft_red, mango_yogurt, moss_green, 
+            olive_yellow, soft_orange, soft_red, mango_yogurt, moss_green,
             olive_yellow, soft_orange, soft_red)
 
 

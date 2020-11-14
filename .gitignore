@@ -1,3 +1,4 @@
 **/data_private
-**/.RHistory
-**/.RData
+**/*.history
+*/.Rhistory
+*/.RData

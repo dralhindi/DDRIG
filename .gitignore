@@ -1,0 +1,4 @@
+**/data_private
+**/*.history
+**/.Rhistory*
+**/.RData*

@@ -1,4 +1,7 @@
+**/data_private
+**/*.history
+**/.Rhistory*
+**/.RData*
 .Rproj.user
-.Rhistory
-.RData
+.idea
 .Ruserdata

@@ -1,0 +1,58 @@
+# SetWD
+cd /share/hennlab/projects/UKB_Pigmentation/01-Working/d_workspace/
+
+# Filter significant snps (bonferonni)
+
+wc -l continuous-1717-both_sexes.metaonly.tsv 
+# output: 28987535 continuous-1717-both_sexes.metaonly.tsv
+
+# 0.05 / 28987535 = 1.72487933e-9, or 0.000000000172487933
+
+awk '{ if($8 <= 0.00000000172487933) { print }}' continuous-1717-both_sexes.metaonly.tsv > ukb_only_signifsnps.tsv
+
+# add header, make sure "/t/"
+nano ukb_only_signifsnps.tsv
+    CHR   BP    REF   ALT  AFR_META   BETA_META   SE_META   PVAL_META   PVAL_HETEROGENEITY
+
+# OPTIONAL: if you want to calculate log do the following
+awk '{print -log($8)/log10}' signifsnps.tsv > logtrial.tsv
+
+# add Header through nano
+nano logtrial.tsv
+
+# Moving log as the last file in signifsnps.tsv into new file calling significant_snps.tsv
+paste signifsnps.tsv logtrial.tsv > significant_snps.tsv  
+
+_______________________________________________________________________________________________________________
+
+# Can plot only significant snps or just load the whole data set and plot as follows
+
+# Activate R
+source /share/hennlab/progs/miniconda3/etc/profile.d/conda.sh
+conda activate R-env
+R
+
+# Plotting 
+library(qqman)
+ukb_raw_snps <- read.table(file = "continuous-1717-both_sexes.metaonly.tsv", header = TRUE)
+
+#Cleaning
+
+# Number SNPs in the table incrementally (qqman requires a 'SNP'. Might want real snp ids ultimately, ie rs303038)
+ukb_raw_snps$SNP<-seq(1:nrow(ukb_raw_snps))
+
+# Remove pval=0 too - causes "Error in plot.window(...) : need finite 'ylim' values" if 0 present (can't -10log a zero!)
+ukb_cleaned_pvalmeta <- ukb_raw_snps[-which(ukb_raw_snps$PVAL_META==0),]
+
+# OR can use the following: 
+ukb_cleaned_pvalmeta <- filter(ukb_raw_snps, PVAL_META != 0)
+
+# Change CHR class
+ukb_cleaned_pvalmeta$CHR <- as.numeric(ukb_cleaned_pvalmeta$CHR)
+
+#plotting
+png(file="manplot_ukb_cleaned_pvalmeta", width=1200, height=600)
+manhattan(ukb_cleaned_pvalmeta, chr="CHR", bp="BP", snp="SNP", p="SE_META", logp=TRUE, suggestiveline=TRUE, genomewideline=TRUE,col=c(#568203,#FCC9B9))
+dev.off()
+
+scp dalhindi@augrabies.genomecenter.ucdavis.edu:/share/hennlab/projects/UKB_Pigmentation/01-Working/d_workspace/manplot_ukb_cleaned_pvalmeta /Users/dana.alhindi/Dropbox/UKB_Pigmentation

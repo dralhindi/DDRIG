@@ -3,11 +3,8 @@
 install.packages("NCmisc")
 library(NCmisc)
 
-## set working directory 
-
-
 ## Read in Data 
-data <- cdb_phenotypes_2017_DRA
+data <- CDB_Phenotypes_2017_DRA
 
 ## Convert to data frame 
 
@@ -77,5 +74,5 @@ for (row in 1:nrow(data)){
 }
 
 # Write data frame to csv file 
-  write.csv(data, file = "cdb_data_final_nov14.csv")
+  write.csv(data, file = "Master_CBD_Phenotype.csv")
 

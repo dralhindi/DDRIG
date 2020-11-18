@@ -4,7 +4,7 @@ An R-Project for data analysis of human genetic phenotype anthropology GWAS SLA4
 
 ## Prerequisites ##
 
-* [pre-commit](https://pre-commit.com/)
+* [pre-commit](https://pre-commit.com/): Install using `pip` or `brew`.
 
 ## Getting Started ##
 

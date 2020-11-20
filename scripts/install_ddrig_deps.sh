@@ -1,5 +1,5 @@
 #!/bin/bash
- 
+
 if ! pre-commit --version &> /dev/null
 then
     echo "pre-commit is not installed. Please install pre-commit using pip or brew."
@@ -15,8 +15,9 @@ declare -a cran_packages=(
 	"tidyverse"
 	"ggplot2"
 	"ggrepel"
+	"NCmisc"
 )
- 
+
 echo "Installing R Packages..."
 for pkg in "${cran_packages[@]}"; do
 	Rscript -e "if (!'$pkg' %in% rownames(installed.packages())) install.packages('$pkg', repo='http://cran.rstudio.com/')"
@@ -27,7 +28,7 @@ done
 declare -a github_packages=(
 	"lorenzwalthert/precommit"
 )
- 
+
 
 echo "Installing GitHub Packages..."
 for pkg in "${cran_packages[@]}"; do

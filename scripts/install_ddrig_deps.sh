@@ -31,7 +31,7 @@ declare -a github_packages=(
 
 
 echo "Installing GitHub Packages..."
-for pkg in "${cran_packages[@]}"; do
+for pkg in "${github_packages[@]}"; do
 	Rscript -e "if (!'$pkg' %in% rownames(installed.packages())) remotes::install_github('$pkg')"
 done
 

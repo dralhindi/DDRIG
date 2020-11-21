@@ -5,7 +5,7 @@ setwd("/Users/dana.alhindi/DDRIG/Pheno/data_private")
 # Plotting histograms for SA pigmentation data from 4 populations using ggplot2
 
 # Load data
-master <- read_excel("MasterPheno_All.xlsx")
+master <- read.csv("MasterPheno_All.csv")
 head(master)
 class(master)
 

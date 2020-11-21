@@ -1,6 +1,6 @@
 # DDRIG
 
-An R-Project for data analysis of human genetic phenotype anthropology GWAS SLA47
+An R-Project for data analysis on human pigmentation variation and human pigmentation genetics.
 
 ## Prerequisites ##
 

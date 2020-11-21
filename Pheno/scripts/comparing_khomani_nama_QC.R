@@ -6,6 +6,7 @@ setwd("/Users/dana.alhindi/DDRIG/Pheno/data_private/")
 
 # This script was developed to compare cleaned data against raw data. Cleaned data seemed to have individuals that would be considered outliers. So this script looks to compare histogram plots against one another and reruning the QC process on the raw data. 
 
+
 # Upload previously cleaned Data
 nama_clean <- read.csv(file = "MasterPhenotype_Nama.csv")
 head(nama_clean)

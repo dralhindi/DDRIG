@@ -40,6 +40,7 @@ prev_cleaned_nama <- ggplot(nama_clean, aes(x=M_Arm)) +
   theme_set(theme_classic() + theme(legend.position = "top") 
   )
 
+
 prev_cleaned_khomani <- ggplot(kho_clean, aes(x=M_Arm)) + 
   geom_histogram(binwidth=1.5, fill="gray", color="gray", alpha=0.9) + 
   labs(title="Melanin Distribution in the previously cleaned Khomani", y="Frequency", x="Melanin", 

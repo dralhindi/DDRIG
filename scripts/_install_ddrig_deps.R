@@ -7,7 +7,7 @@ r_packages <- c("dplyr",
               "ggrepel",
               "NCmisc",
               "lintr",
-              "precommit") # ggforce tends to have issues installing due to RcppEigen
+              "precommit")
 
 missing_r_packages <- r_packages[!(r_packages %in% installed.packages()[, "Package"])]
 if (length(missing_r_packages)) install.packages(missing_r_packages, repo = "http://cran.rstudio.com/")

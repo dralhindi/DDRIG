@@ -6,7 +6,7 @@ then
     exit
 fi
 
-echo "Installing R Packages..."
+echo "Installing DDRIG dependencies..."
 
 time Rscript -e 'source("./scripts/_install_ddrig_deps.R")'
 

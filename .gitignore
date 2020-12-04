@@ -4,3 +4,5 @@
 **/.RData*
 .Rproj.user
 .idea
+.Ruserdata
+.DS_Store

@@ -4,7 +4,7 @@ library(DescTools)
 # Running ANOVA test on KhoeSan pigmentation averages
 
 # set work directory
-setwd("/Users/dana.alhindi/DDRIG/Pheno/data_private/")
+setwd("Pheno/data_private/")
 
 # Load data
 cdb <- read.csv(file = "MasterPheno_CDB_DRA.csv")
@@ -16,10 +16,10 @@ data_omitKaroo <- read.csv(file = "pigmentation_data_minusKaroo.csv")
 
 
 # Removing empty rows
-cdb <- cdb[-which(is.na(as.numeric(cdb$M_Arm))),]
-nama <- nama[-which(is.na(as.numeric(nama$M_Arm))),]
-kho <- kho[-which(is.na(as.numeric(kho$M_Arm))),]
-data <- data[-which(is.na(as.numeric(data$M_Arm))),]
+cdb <- cdb[-which(is.na(as.numeric(cdb$M_Arm))), ]
+nama <- nama[-which(is.na(as.numeric(nama$M_Arm))), ]
+kho <- kho[-which(is.na(as.numeric(kho$M_Arm))), ]
+data <- data[-which(is.na(as.numeric(data$M_Arm))), ]
 data_omitKaroo <- data_omitKaroo[-which(is.na(as.numeric(data_omitKaroo)))]
 
 # Making sure columns are numeric

@@ -4,12 +4,10 @@ library(hrbrthemes)
 library(viridis)
 library(RColorBrewer)
 
-setwd("/Users/dana.alhindi/DDRIG/Pheno/data_private")
-
 # Plotting histograms for SA pigmentation data from 4 populations using ggplot2
 
 # Load data
-master <- read.csv("MasterPheno_All.csv")
+master <- read.csv("Pheno/data_private/MasterPheno_All.csv")
 head(master)
 class(master)
 
@@ -70,7 +68,7 @@ violinplot <- ggplot(master, aes(fill = Population, x = Population, y = M_Arm)) 
 
 
 # Save File
-pdf(file = "/Users/dana.alhindi/DDRIG/Pheno/output/distribution_pigmentation_plot.pdf", width = 12, height = 9)
+pdf(file = "Pheno/output/distribution_pigmentation_plot.pdf", width = 12, height = 9)
 barplot
 violinplot
 dev.off()

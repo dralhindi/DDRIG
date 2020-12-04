@@ -1,12 +1,17 @@
-## Cederberg Pigmentation Measurements
+## QC Pigmentation Measurements
+
 library(NCmisc)
 
 ## Read in Data
-data <- cdb_phenotypes_2017_DRA
+data <- read.csv("Pheno/data_private/cdb_phenotypes_2017_DRA.csv")
 
 ## Convert to data frame
+
 data <- as.data.frame(data)
 nrow(data)
+
+## Drop NA Values
+
 
 ## Function to drop min & max of a list of numbers, and return average
 drop_avg <- function(v) {
@@ -22,41 +27,31 @@ data$avg.m.r <- NA
 data$avg.m.l <- NA
 
 ## Ensure all values are integers
-cols <- c("e.r.arm_1", "e.r.arm_2", "e.r.arm_3", "e.r.arm_4", "e.r.arm_5",
-       "e.l.arm_1", "e.l.arm_2", "e.l.arm_3", "e.l.arm_4", "e.l.arm_5",
-       "m.r.arm_1", "m.r.arm_2", "m.r.arm_3", "m.r.arm_4", "m.r.arm_5",
-       "m.l.arm_1", "m.l.arm_2", "m.l.arm_3", "m.l.arm_4", "m.l.arm_5")
-
-data[, cols] <- sapply(data[, cols], as.numeric)
+data[, c(5:24)] <- sapply(data[, c(5:24)], as.numeric)
+colnames(data)
 
 ## Loop through rows of data frame "data"
 ## Drops min & max values, averages them, puts avg in another column in data frame
+## Does this for each measurement separately: e_r, e_l, m_r, m_l
 
 for (row in seq_len(nrow(data))) {
   e.r.arm <- data[row, c("e.r.arm_1", "e.r.arm_2", "e.r.arm_3", "e.r.arm_4", "e.r.arm_5")]
   data[row, ]$avg.e.r <- drop_avg(e.r.arm)
-
   e.l.arm <- data[row, c("e.l.arm_1", "e.l.arm_2", "e.l.arm_3", "e.l.arm_4", "e.l.arm_5")]
   data[row, ]$avg.e.l <- drop_avg(e.l.arm)
-
   m.r.arm <- data[row, c("m.r.arm_1", "m.r.arm_2", "m.r.arm_3", "m.r.arm_4", "m.r.arm_5")]
   data[row, ]$avg.m.r <- drop_avg(m.r.arm)
-
   m.l.arm <- data[row, c("m.l.arm_1", "m.l.arm_2", "m.l.arm_3", "m.l.arm_4", "m.l.arm_5")]
   data[row, ]$avg.m.l <- drop_avg(m.l.arm)
 }
 
+## Gets difference between M averages (m_r - m_l)
+data$m_diff <- data$avg.m.r - data$avg.m.l
 
-## Omit outliers > 2 sd from mean for all four measurements across dataset
-# TODO(Dana): Go back and double check what stage to remove outlines. By arm or by E/M average?
-
-data <- data[- (which.outlier(data$avg.e.r, thr = 2, method = "sd", high = TRUE, low = TRUE)), ]
-data <- data[- (which.outlier(data$avg.e.l, thr = 2, method = "sd", high = TRUE, low = TRUE)), ]
-data <- data[- (which.outlier(data$avg.m.r, thr = 2, method = "sd", high = TRUE, low = TRUE)), ]
-data <- data[- (which.outlier(data$avg.m.l, thr = 2, method = "sd", high = TRUE, low = TRUE)), ]
+## Omit outliers > 2 sd from mean for the column m_diff (containing differences between m averages)
+data <- data[- (which.outlier(data$m_diff, thr = 2, method = "sd", high = TRUE, low = TRUE)), ]
 
 # Average left and right arms for each sample (row)
-
 data$Final_E <- NA
 data$Final_M <- NA
 
@@ -67,5 +62,7 @@ for (row in seq_len(nrow(data))) {
   data[row, ]$Final_M <- avg_M
 }
 
+nrow(data)
+
 # Write data frame to csv file
-  write.csv(data, file = "cdb_data_final_nov14.csv")
+write.csv(data, file = "Pheno/data_private/Master_Pheno_CDB.csv")

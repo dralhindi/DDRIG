@@ -8,7 +8,6 @@ data <- read.csv("Pheno/data_private/cdb_phenotypes_2017_DRA.csv")
 ## Convert to data frame
 
 data <- as.data.frame(data)
-nrow(data)
 
 ## Drop NA Values
 
@@ -32,7 +31,7 @@ colnames(data)
 
 ## Loop through rows of data frame "data"
 ## Drops min & max values, averages them, puts avg in another column in data frame
-## Does this for each measurement separately: e_r, e_l, m_r, m_l
+## Do this for each measurement separately: e_r, e_l, m_r, m_l
 
 for (row in seq_len(nrow(data))) {
   e.r.arm <- data[row, c("e.r.arm_1", "e.r.arm_2", "e.r.arm_3", "e.r.arm_4", "e.r.arm_5")]
@@ -62,7 +61,6 @@ for (row in seq_len(nrow(data))) {
   data[row, ]$Final_M <- avg_M
 }
 
-nrow(data)
 
 # Write data frame to csv file
 write.csv(data, file = "Pheno/data_private/Master_Pheno_CDB.csv")

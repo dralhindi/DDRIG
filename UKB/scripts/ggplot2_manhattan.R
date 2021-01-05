@@ -2,7 +2,6 @@ library(ggplot2)
 library(dplyr)
 
 # Using ggplot2 for GWAS by Dana Al-Hindi.
-# The file is named Royal T after the Royal Tenenbaum colors scheme.
 
 # This code is set up to plot the statistical results from a GWAS.
 # It requires a data frame that has a column CHR and BP present.

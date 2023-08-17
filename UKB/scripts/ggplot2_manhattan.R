@@ -15,10 +15,11 @@ args <- commandArgs(TRUE)
 data <- read.table(args[1], header = TRUE)
 pval <- args[2]
 data <- as.data.frame(data)
+pval <- as.character(pval)
 data[pval] <- lapply(data[pval], as.numeric)
 
-# Set colors for plot.
 
+# Set colors for plot.
 data$BPcum <- NA
 s <- 0
 nbp <- c()
